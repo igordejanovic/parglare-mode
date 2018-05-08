@@ -55,12 +55,16 @@
   "Syntax table used in parglare buffers.")
 
 
-(defconst parglare-keywords '("left"
+(defconst parglare-keywords '("import"
+                              "as"
+                              "left"
                               "right"
                               "prefer"
-                              "dynamic"))
+                              "dynamic"
+                              "nops"
+                              "nopse"))
 
-(defconst parglare-interpunction '(":" "|" "{" "}" "=" "?="))
+(defconst parglare-interpunction '(":" ";" "|" "{" "}" "=" "?="))
 
 
 (defvar parglare-font-lock-keywords
