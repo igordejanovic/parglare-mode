@@ -42,13 +42,19 @@
 (defconst parglare-mode-syntax-table
   (let ((table (make-syntax-table)))
     (modify-syntax-entry ?_ "w" table)
-    (modify-syntax-entry ?/ "\". 124b" table)
-    (modify-syntax-entry ?| ". 23" table)
-    (modify-syntax-entry ?: ". 23" table)
-    (modify-syntax-entry ?{ ". 23" table)
-    (modify-syntax-entry ?} ". 23" table)
-    (modify-syntax-entry ?= ". 23" table)
-    (modify-syntax-entry ?\n "> b" table)
+    (modify-syntax-entry ?. "w" table)
+    (modify-syntax-entry ?@ "w" table)
+    (modify-syntax-entry ?/ ". 124" table)
+    (modify-syntax-entry ?/ "\"" table)
+    (modify-syntax-entry ?* ". 23b" table)
+    (modify-syntax-entry ?| "." table)
+    (modify-syntax-entry ?: "." table)
+    (modify-syntax-entry ?{ "(}" table)
+    (modify-syntax-entry ?} "){" table)
+    (modify-syntax-entry ?= "." table)
+    (modify-syntax-entry ?? "." table)
+    (modify-syntax-entry ?+ "." table)
+    (modify-syntax-entry ?\n ">" table)
     (modify-syntax-entry ?' "\"" table)
     (modify-syntax-entry ?\" "\"" table)
     table)
@@ -57,6 +63,7 @@
 
 (defconst parglare-keywords '("import"
                               "as"
+                              "terminals"
                               "left"
                               "right"
                               "prefer"
@@ -64,14 +71,16 @@
                               "nops"
                               "nopse"))
 
-(defconst parglare-interpunction '(":" ";" "|" "{" "}" "=" "?="))
+(defconst parglare-interpunction '(":" ";" "|" "{" "}" "*" "*!" "+" "+!" "="  "?" "?="))
+;;(defconst parglare-types '("@\\w+"))
+(defconst parglare-types (rx (or "@\\w+")))
 
 
 (defvar parglare-font-lock-keywords
   (list
    (cons (regexp-opt parglare-keywords 'words) font-lock-keyword-face)
-   (cons (regexp-opt parglare-interpunction 'symbol) font-lock-keyword-face)
-   (cons "\_<@\\(\\sw\\|\\s_\\)+\_>" font-lock-keyword-face)))
+   (cons (regexp-opt parglare-interpunction 'words) font-lock-keyword-face)
+   (cons parglare-types font-lock-keyword-face)))
 
 ;; Comments
 (set (make-local-variable 'comment-start) "// ")
@@ -117,9 +126,10 @@
   ;; (setq-local indent-line-function 'parglare-indent-line)
   (setq-local imenu-generic-expression parglare-imenu-generic-expression))
 
-;; Activate parglare-mode for files with .pg extension
+;; Activate parglare-mode for files with .pg and .rustemo extensions
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.pg\\'" . parglare-mode))
+(add-to-list 'auto-mode-alist '("\\.rustemo\\'" . parglare-mode))
 
 (provide 'parglare-mode)
 
